@@ -18,3 +18,8 @@
  - Add A few starter docs
  - Deploy to Dev env on a template for previewing
  - Deploy to Prod
+
+### Contributors
+[Apostolis Ntaskas](https://github.com/ApostolisNt)
+[Fabio Saraseli](https://github.com/Fabio012119)
+[Gxp](https://github.com/safeplace12345)
