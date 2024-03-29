@@ -20,6 +20,6 @@
  - Deploy to Prod
 
 ### Contributors
-[Apostolis Ntaskas](https://github.com/ApostolisNt)
-[Fabio Saraseli](https://github.com/Fabio012119)
-[Gxp](https://github.com/safeplace12345)
+- [Apostolis Ntaskas](https://github.com/ApostolisNt)
+- [Fabio Saraseli](https://github.com/Fabio012119)
+- [Gxp](https://github.com/safeplace12345)
