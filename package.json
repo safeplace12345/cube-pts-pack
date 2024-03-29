@@ -2,8 +2,7 @@
     "name": "cube-pts-pack",
     "version": "1.0.0",
     "main": "index.js",
-    "scripts": {
-    },
+    "scripts": {},
     "devDependencies": {
         "@types/node": "^20.11.30",
         "@types/react": "^18.2.67",
@@ -17,6 +16,7 @@
         "node": ">=18.10.0"
     },
     "dependencies": {
+        "cube-pts-pack": "^1.0.0",
         "scheduler": "^0.23.0"
     }
 }

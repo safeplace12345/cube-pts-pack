@@ -1,38 +1,41 @@
-/**
- * Initializes and runs the particle system with the given configuration.
- * @param {Object} config Configuration options for the particle system.
- */
-function particleSystem({
-    connectionThreshold = 170,
-    particlesNumber = 50,
-    particlesSpeed = 1
-} = {}) {
-    let particles = [];
-
+exports.createParticlesBackDrop = function particleSystem(_a, callBack) {
+    var connectionThreshold = _a.connectionThreshold, particlesNumber = _a.particlesNumber, particlesSpeed = _a.particlesSpeed;
+    var particles = [];
     // Create canvas and context
-    const canvas = document.createElement('canvas');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    canvas.className = 'canvas-background';
+    var canvas = document.createElement('canvas');
+    applyStyling();
     document.body.appendChild(canvas);
-    const context = canvas.getContext('2d');
-
-    // Generates particles with random properties
-    function createParticles() {
-        for (let i = 0; i < particlesNumber; i++) {
-            const x = Math.random() * canvas.width;
-            const y = Math.random() * canvas.height;
-            const radius = Math.random() * 3 + 1;
-            const dx = Math.random() * particlesSpeed - particlesSpeed / 2;
-            const dy = Math.random() * particlesSpeed - particlesSpeed / 2;
-            particles.push({ x, y, radius, dx, dy });
+    var context = canvas.getContext('2d');
+    if (!context) {
+        throw new Error('Failed to get canvas context');
+    }
+    function applyStyling() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        canvas.style.width = "100%";
+        canvas.style.background = "rgb(46, 253, 219)";
+        canvas.style.backgroundImage = `radial-gradient(circle,rgb(12, 77, 78),rgb(6, 65, 70),rgb(5, 53, 61),rgb(5, 41, 51),rgb(6, 30, 40))`;
+        if (window.matchMedia('(max-width: 992px)').matches) {
+            canvas.style.width = "unset";
         }
     }
-
+    // Generates particles with random properties
+    function createParticles() {
+        var i = 0;
+        while (i < particlesNumber) {
+            var x = Math.random() * canvas.width;
+            var y = Math.random() * canvas.height;
+            var radius = Math.random() * 3 + 1;
+            var dx = Math.random() * particlesSpeed - particlesSpeed / 2;
+            var dy = Math.random() * particlesSpeed - particlesSpeed / 2;
+            particles.push({ x: x, y: y, radius: radius, dx: dx, dy: dy });
+            i++;
+        }
+    }
     // Draws particles on the canvas and connects them if they are close enough
     function drawParticles() {
         context.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(particle => {
+        particles.forEach(function (particle) {
             context.fillStyle = "#2EFDDB";
             context.globalAlpha = 0.5;
             context.beginPath();
@@ -42,20 +45,18 @@ function particleSystem({
             particle.y += particle.dy;
             particle.x = (particle.x + canvas.width) % canvas.width;
             particle.y = (particle.y + canvas.height) % canvas.height;
-
             connectParticles(particle);
         });
     }
-
     // Connects particles that are within the connection threshold
     function connectParticles(particle) {
-        particles.forEach(otherParticle => {
+        particles.forEach(function (otherParticle) {
             if (particle !== otherParticle) {
-                const dx = particle.x - otherParticle.x;
-                const dy = particle.y - otherParticle.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
+                var dx = particle.x - otherParticle.x;
+                var dy = particle.y - otherParticle.y;
+                var distance = Math.sqrt(dx * dx + dy * dy);
                 if (distance < connectionThreshold) {
-                    context.strokeStyle = `rgba(255, 255, 255, ${1 - distance / connectionThreshold})`;
+                    context.strokeStyle = "rgba(255, 255, 255, ".concat(1 - distance / connectionThreshold, ")");
                     context.lineWidth = 1.5;
                     context.beginPath();
                     context.moveTo(particle.x, particle.y);
@@ -65,22 +66,18 @@ function particleSystem({
             }
         });
     }
-
     // Animates the drawing of particles
     function animate() {
         requestAnimationFrame(animate);
         drawParticles();
     }
-
     // Initialize the particle system
     function init() {
         createParticles();
         animate();
         console.log('Particle system active');
+        callBack();
     }
-
     // Bind event listeners
     window.addEventListener('load', init);
-}
-
-particleSystem();
+};
