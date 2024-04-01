@@ -2,7 +2,7 @@
 
 - How To
 - Run in Production
-   inorder to run it , just create index.html file, Run `npm i cube-particles-pack1@1.0.0` .
+   inorder to run it , just create index.html file, Run `npm i cube-pts-pack-v1` .
     then refrence the index.js from the root dir of package from node_modules
 - Run in Dev
    NOTE: Project is being written in Typescript and transpiled into es6 JS
