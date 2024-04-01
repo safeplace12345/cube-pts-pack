@@ -12,7 +12,7 @@ interface ParticleSystemConfig {
   particlesSpeed?: number;
 }
 
-exports.createParticlesBackDrop = function particleSystem({
+export function createParticlesBackDrop({
   connectionThreshold,
   particlesNumber,
   particlesSpeed,
