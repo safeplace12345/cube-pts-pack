@@ -2,7 +2,7 @@
 
 - How To
 - Run in Production
-   inorder to run it , just create index.html file, Run `npm i cube-particles-pack1@1.0.0` .
+   inorder to run it , just create index.html file, Run `npm i cube-pts-pack-v1` .
     then refrence the index.js from the root dir of package from node_modules
 - Run in Dev
    NOTE: Project is being written in Typescript and transpiled into es6 JS
@@ -23,3 +23,32 @@
 - [Apostolis Ntaskas](https://github.com/ApostolisNt)
 - [Fabio Saraseli](https://github.com/Fabio012119)
 - [Gxp](https://github.com/safeplace12345)
+
+
+### How To Use
+
+> HTML
+   
+      `<!DOCTYPE html>
+      <html lang="en">
+       <head>
+           <meta charset="UTF-8">
+           <meta name="viewport" content="width=device-width, initial-scale=1.0">
+           <title>Document</title>
+       </head>
+       <body></body>
+       <script src="./node_modules/cube-pts-pack/index.js"></script>
+       <script >
+           const config = {
+               connectionThreshold :170,
+               particlesNumber : 50,
+               particlesSpeed : 1
+           }
+           createParticlesBackDrop(config)
+       </script>
+      </html>`
+
+> React
+
+    `import {createParticlesBackDrop} from "cube-pts-pack-v1"
+    createParticlesBackDrop()`

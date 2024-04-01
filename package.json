@@ -1,8 +1,10 @@
 {
-    "name": "cube-pts-pack",
+    "name": "cube-pts-pack-v1",
     "version": "1.0.0",
-    "main": "index.js",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "scripts": {
+        "build": "tsc"
     },
     "devDependencies": {
         "@types/node": "^20.11.30",
@@ -17,6 +19,8 @@
         "node": ">=18.10.0"
     },
     "dependencies": {
+        "cube-pts-pack": "^1.0.0",
+        "cube-pts-pack-v1": "^1.0.0",
         "scheduler": "^0.23.0"
     }
 }
