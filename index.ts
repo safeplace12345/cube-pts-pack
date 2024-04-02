@@ -51,9 +51,8 @@ export function createParticlesBackDrop({
 
   // Generates particles with random properties
   function createParticles(): void {
-    const numParticles = particlesNumber ?? 50;
     let i = 0
-    while (i < numParticles) {
+    while (i < particlesNumber) {
       const x: number = Math.random() * canvas.width;
       const y: number = Math.random() * canvas.height;
       const radius: number = Math.random() * 3 + 1;
