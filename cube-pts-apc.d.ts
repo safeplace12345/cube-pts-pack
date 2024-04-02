@@ -1,1 +1,1 @@
-declare module "cube-pts-pack";
+declare module "cube-pts-pack-v1";
