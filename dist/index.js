@@ -1,8 +1,8 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.createParticlesBackDrop = void 0;
 function createParticlesBackDrop(_a, callBack) {
-    var connectionThreshold = _a.connectionThreshold, particlesNumber = _a.particlesNumber, particlesSpeed = _a.particlesSpeed;
+    var _b = _a.connectionThreshold, connectionThreshold = _b === void 0 ? 170 : _b, _c = _a.particlesNumber, particlesNumber = _c === void 0 ? 50 : _c, _d = _a.particlesSpeed, particlesSpeed = _d === void 0 ? 1 : _d;
     var particles = [];
     // Create canvas and context
     var canvas = document.createElement('canvas');
