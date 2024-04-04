@@ -13,9 +13,9 @@ interface ParticleSystemConfig {
 }
 
 export function createParticlesBackDrop({
-  connectionThreshold,
-  particlesNumber,
-  particlesSpeed,
+  connectionThreshold = 170,
+  particlesNumber = 50,
+  particlesSpeed = 1,
 }: ParticleSystemConfig, callBack: () => void) {
   let particles: Particle[] = [];
 
