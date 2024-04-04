@@ -6,13 +6,13 @@
         <title>Document</title>
     </head>
     <body></body>
-    <script src="./node_modules/cube-pts-pack/index.js"></script>
+    <script src="./dist/index.js"></script>
     <script >
         const config = {
             connectionThreshold :170,
             particlesNumber : 50,
             particlesSpeed : 1
         }
-        createParticlesBackDrop(config)
+        createParticlesBackDrop(config, () => {})
     </script>
 </html>
