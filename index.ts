@@ -71,18 +71,17 @@ export function createParticlesBackDrop(
 
       particles.forEach((otherParticle) => {
         if (particle !== otherParticle) {
-          const distance = Math.hypot(
-            particle.x - otherParticle.x,
-            particle.y - otherParticle.y
-          );
+          const dx: number = particle.x - otherParticle.x;
+          const dy: number = particle.y - otherParticle.y;
+          const distance: number = Math.sqrt(dx * dx + dy * dy);
           if (distance < connectionThreshold) {
-            ctx.beginPath();
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(otherParticle.x, otherParticle.y);
             ctx.strokeStyle = `rgba(255, 255, 255, ${
               1 - distance / connectionThreshold
             })`;
             ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(particle.x, particle.y);
+            ctx.lineTo(otherParticle.x, otherParticle.y);
             ctx.stroke();
           }
         }
@@ -100,7 +99,7 @@ export function createParticlesBackDrop(
   }
 
   animate();
-  console.log('Particle system active');
+  console.log("Particle system active");
   return () => {
     particles = [];
     if (canvas.parentNode) {
