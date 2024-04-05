@@ -100,7 +100,7 @@ export function createParticlesBackDrop(
   }
 
   animate();
-
+  console.log('Particle system active');
   return () => {
     particles = [];
     if (canvas.parentNode) {
