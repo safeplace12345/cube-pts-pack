@@ -1,87 +1,84 @@
-"use strict";
-exports.__esModule = true;
-exports.createParticlesBackDrop = void 0;
-function createParticlesBackDrop(_a, callBack) {
-    var _b = _a.connectionThreshold, connectionThreshold = _b === void 0 ? 170 : _b, _c = _a.particlesNumber, particlesNumber = _c === void 0 ? 50 : _c, _d = _a.particlesSpeed, particlesSpeed = _d === void 0 ? 1 : _d;
-    var particles = [];
-    // Create canvas and context
-    var canvas = document.createElement('canvas');
-    applyStyling();
-    document.body.appendChild(canvas);
-    var context = canvas.getContext('2d');
-    if (!context) {
-        throw new Error('Failed to get canvas context');
-    }
-    function applyStyling() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        canvas.style.width = "100%";
-        canvas.style.background = "rgb(46, 253, 219)";
-        canvas.style.backgroundImage = "radial-gradient(\n    circle,\n    rgb(12, 77, 78),\n    rgb(6, 65, 70),\n    rgb(5, 53, 61),\n    rgb(5, 41, 51),\n    rgb(6, 30, 40)\n    )";
-        if (window.matchMedia('(max-width: 992px)').matches) {
-            canvas.style.width = "unset";
-        }
-    }
-    // Generates particles with random properties
-    function createParticles() {
-        var i = 0;
-        while (i < particlesNumber) {
-            var x = Math.random() * canvas.width;
-            var y = Math.random() * canvas.height;
-            var radius = Math.random() * 3 + 1;
-            var dx = Math.random() * particlesSpeed - particlesSpeed / 2;
-            var dy = Math.random() * particlesSpeed - particlesSpeed / 2;
-            particles.push({ x: x, y: y, radius: radius, dx: dx, dy: dy });
-            i++;
-        }
-    }
-    // Draws particles on the canvas and connects them if they are close enough
-    function drawParticles() {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(function (particle) {
-            context.fillStyle = "#2EFDDB";
-            context.globalAlpha = 0.5;
-            context.beginPath();
-            context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-            context.fill();
+export function createParticlesBackDrop(config, canvasClass, callBack) {
+    const parentElement = document.body;
+    let particles = [];
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    if (!ctx)
+        return () => { };
+    canvas.style.position = "fixed";
+    canvas.style.left = "0";
+    canvas.style.top = "0";
+    canvas.style.height = "100%";
+    canvas.style.background = "rgb(46, 253, 219)";
+    canvas.style.backgroundImage = `radial-gradient(
+  circle,
+  rgb(12, 77, 78),
+  rgb(6, 65, 70),
+  rgb(5, 53, 61),
+  rgb(5, 41, 51),
+  rgb(6, 30, 40)
+  )`;
+    canvas.setAttribute("class", canvasClass);
+    // Append canvas to the body
+    parentElement.appendChild(canvas);
+    // Ensure correct dimensions
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const createParticle = () => {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const radius = Math.random() * 3 + 1;
+        const dx = Math.random() * config.particlesSpeed - config.particlesSpeed / 2;
+        const dy = Math.random() * config.particlesSpeed - config.particlesSpeed / 2;
+        particles.push({ x, y, radius, dx, dy });
+    };
+    const drawParticles = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#2EFDDB";
+        ctx.globalAlpha = 0.5;
+        particles.forEach((particle) => {
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+            ctx.fill();
             particle.x += particle.dx;
             particle.y += particle.dy;
-            particle.x = (particle.x + canvas.width) % canvas.width;
-            particle.y = (particle.y + canvas.height) % canvas.height;
-            connectParticles(particle);
-        });
-    }
-    // Connects particles that are within the connection threshold
-    function connectParticles(particle) {
-        particles.forEach(function (otherParticle) {
-            if (particle !== otherParticle) {
-                var dx = particle.x - otherParticle.x;
-                var dy = particle.y - otherParticle.y;
-                var distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < connectionThreshold) {
-                    context.strokeStyle = "rgba(255, 255, 255, ".concat(1 - distance / connectionThreshold, ")");
-                    context.lineWidth = 1.5;
-                    context.beginPath();
-                    context.moveTo(particle.x, particle.y);
-                    context.lineTo(otherParticle.x, otherParticle.y);
-                    context.stroke();
-                }
+            if (particle.x > canvas.width || particle.x < 0) {
+                particle.dx *= -1;
             }
+            if (particle.y > canvas.height || particle.y < 0) {
+                particle.dy *= -1;
+            }
+            particles.forEach((otherParticle) => {
+                if (particle !== otherParticle) {
+                    const dx = particle.x - otherParticle.x;
+                    const dy = particle.y - otherParticle.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < config.connectionThreshold) {
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / config.connectionThreshold})`;
+                        ctx.lineWidth = 1.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particle.x, particle.y);
+                        ctx.lineTo(otherParticle.x, otherParticle.y);
+                        ctx.stroke();
+                    }
+                }
+            });
         });
-    }
-    // Animates the drawing of particles
-    function animate() {
+    };
+    const animate = () => {
         requestAnimationFrame(animate);
         drawParticles();
+    };
+    for (let i = 0; i < config.particlesNumber; i++) {
+        createParticle();
     }
-    // Initialize the particle system
-    function init() {
-        createParticles();
-        animate();
-        console.log('Particle system active');
-        callBack();
-    }
-    // Bind event listeners
-    window.addEventListener('load', init);
+    animate();
+    console.log("Particle system active");
+    callBack();
+    return () => {
+        particles = [];
+        if (canvas.parentNode) {
+            canvas.parentNode.removeChild(canvas);
+        }
+    };
 }
-exports.createParticlesBackDrop = createParticlesBackDrop;

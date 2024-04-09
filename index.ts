@@ -6,18 +6,23 @@ interface Particle {
   dy: number;
 }
 
-export function createParticlesBackDrop(
+interface props {
   connectionThreshold: number,
   particlesNumber: number,
   particlesSpeed: number,
-  canvasClass: string
+}
+
+export function createParticlesBackDrop(
+  config: props,
+  canvasClass: string,
+  callBack: () => void,
 ): () => void {
   const parentElement = document.body;
 
   let particles: Particle[] = [];
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
-  if (!ctx) return () => {};
+  if (!ctx) return () => { };
 
   canvas.style.position = "fixed";
   canvas.style.left = "0";
@@ -45,8 +50,8 @@ export function createParticlesBackDrop(
     const x = Math.random() * canvas.width;
     const y = Math.random() * canvas.height;
     const radius = Math.random() * 3 + 1;
-    const dx = Math.random() * particlesSpeed - particlesSpeed / 2;
-    const dy = Math.random() * particlesSpeed - particlesSpeed / 2;
+    const dx = Math.random() * config.particlesSpeed - config.particlesSpeed / 2;
+    const dy = Math.random() * config.particlesSpeed - config.particlesSpeed / 2;
     particles.push({ x, y, radius, dx, dy });
   };
 
@@ -74,10 +79,9 @@ export function createParticlesBackDrop(
           const dx: number = particle.x - otherParticle.x;
           const dy: number = particle.y - otherParticle.y;
           const distance: number = Math.sqrt(dx * dx + dy * dy);
-          if (distance < connectionThreshold) {
-            ctx.strokeStyle = `rgba(255, 255, 255, ${
-              1 - distance / connectionThreshold
-            })`;
+          if (distance < config.connectionThreshold) {
+            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / config.connectionThreshold
+              })`;
             ctx.lineWidth = 1.5;
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
@@ -94,12 +98,13 @@ export function createParticlesBackDrop(
     drawParticles();
   };
 
-  for (let i = 0; i < particlesNumber; i++) {
+  for (let i = 0; i < config.particlesNumber; i++) {
     createParticle();
   }
 
   animate();
   console.log("Particle system active");
+  callBack();
   return () => {
     particles = [];
     if (canvas.parentNode) {
